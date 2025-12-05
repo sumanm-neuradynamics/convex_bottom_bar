@@ -41,7 +41,8 @@ class TabItem<T> {
   final bool blend;
 
   /// Create item
-  const TabItem({
+  /// Note: When using a function for title, do not use const constructor
+  TabItem({
     this.fontFamily,
     this.title = '',
     required this.icon,
@@ -64,23 +65,33 @@ class TabItem<T> {
   /// If title is null or empty String, returns null
   Widget? buildTitleWidget(TextStyle? textStyle, bool isActive) {
     if (title == null) return null;
-    // Check if it's a function (TitleBuilder)
+
+    // Check if it's a function (TitleBuilder) - check this first before Widget/String
     if (title is Function) {
       try {
-        final result = title(isActive);
-        if (result is Widget) {
+        final Function func = title as Function;
+        final result = func(isActive);
+        if (result != null && result is Widget) {
           return result;
         }
+        // If function returns null or non-Widget, return null
+        return null;
       } catch (e) {
-        // If function call fails, it's not a valid TitleBuilder
+        // If function call fails, return null to prevent crash
+        // This can happen if the function depends on context that isn't available
+        return null;
       }
     }
+
+    // Check for Widget before String to avoid type confusion
     if (title is Widget) return title as Widget;
+
     if (title is String) {
       final String titleStr = title as String;
       if (titleStr.isEmpty) return null;
       return Text(titleStr, style: textStyle);
     }
+
     return null;
   }
 
