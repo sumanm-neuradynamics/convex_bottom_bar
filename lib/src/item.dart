@@ -17,12 +17,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Function type for building title widget based on active state
+typedef TitleBuilder = Widget Function(bool isActive);
+
 /// Tab item used for [ConvexAppBar].
 class TabItem<T> {
   /// this code is added by moein
   final String? fontFamily;
 
-  /// Tab text. Can be a String or a Widget.
+  /// Tab text. Can be a String, a Widget, or a function that takes isActive and returns a Widget.
   final dynamic title;
 
   /// IconData or Image.
@@ -46,16 +49,32 @@ class TabItem<T> {
     bool? isIconBlend,
   })  : assert(icon is IconData || icon is Widget,
             'TabItem only support IconData and Widget'),
-        assert(title == null || title is String || title is Widget,
-            'TabItem title must be String or Widget'),
+        assert(
+            title == null ||
+                title is String ||
+                title is Widget ||
+                title is Function,
+            'TabItem title must be String, Widget, or TitleBuilder function (Widget Function(bool))'),
         blend = isIconBlend ?? (icon is IconData);
 
-  /// Build title widget from title (String or Widget)
+  /// Build title widget from title (String, Widget, or TitleBuilder function)
   /// If title is a String, it will be wrapped in a Text widget with the given style
   /// If title is a Widget, it will be returned as is
+  /// If title is a TitleBuilder function, it will be called with isActive parameter
   /// If title is null or empty String, returns null
-  Widget? buildTitleWidget(TextStyle? textStyle) {
+  Widget? buildTitleWidget(TextStyle? textStyle, bool isActive) {
     if (title == null) return null;
+    // Check if it's a function (TitleBuilder)
+    if (title is Function) {
+      try {
+        final result = title(isActive);
+        if (result is Widget) {
+          return result;
+        }
+      } catch (e) {
+        // If function call fails, it's not a valid TitleBuilder
+      }
+    }
     if (title is Widget) return title as Widget;
     if (title is String) {
       final String titleStr = title as String;
@@ -69,6 +88,7 @@ class TabItem<T> {
   bool get hasTitle {
     if (title == null) return false;
     if (title is Widget) return true;
+    if (title is Function) return true; // TitleBuilder is a Function
     if (title is String) {
       return (title as String).isNotEmpty;
     }

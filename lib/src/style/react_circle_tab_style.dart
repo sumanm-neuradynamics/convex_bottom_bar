@@ -76,7 +76,7 @@ class ReactCircleTabStyle extends InnerBuilder {
       ),
     ];
     if (!noLabel) {
-      final titleWidget = item.buildTitleWidget(textStyle);
+      final titleWidget = item.buildTitleWidget(textStyle, active);
       if (titleWidget != null) {
         children.add(titleWidget);
       }

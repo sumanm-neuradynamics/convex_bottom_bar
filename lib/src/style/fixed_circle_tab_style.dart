@@ -70,7 +70,7 @@ class FixedCircleTabStyle extends InnerBuilder {
       color: item.blend ? (c) : null,
       size: style.iconSize,
     );
-    var titleWidget = item.buildTitleWidget(textStyle);
+    var titleWidget = item.buildTitleWidget(textStyle, active);
     var children = noLabel
         ? <Widget>[icon]
         : <Widget>[icon, titleWidget ?? SizedBox.shrink()];

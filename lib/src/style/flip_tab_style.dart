@@ -50,7 +50,7 @@ class FlipTabStyle extends InnerBuilder {
       ];
       var noLabel = style.hideEmptyLabel && hasNoText(item);
       if (!noLabel) {
-        final titleWidget = item.buildTitleWidget(textStyle);
+        final titleWidget = item.buildTitleWidget(textStyle, active);
         if (titleWidget != null) {
           children.add(titleWidget);
         }

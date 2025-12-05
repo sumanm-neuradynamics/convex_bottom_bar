@@ -54,7 +54,7 @@ class ReactTabStyle extends InnerBuilder {
       ];
       if (!noLabel) {
         final titleWidget = item.buildTitleWidget(
-            style.textStyle(activeColor, item.fontFamily));
+            style.textStyle(activeColor, item.fontFamily), active);
         if (titleWidget != null) {
           children.add(titleWidget);
         }
@@ -74,7 +74,7 @@ class ReactTabStyle extends InnerBuilder {
     ];
     if (!noLabel) {
       final titleWidget = item.buildTitleWidget(
-          style.textStyle(color, item.fontFamily));
+          style.textStyle(color, item.fontFamily), active);
       if (titleWidget != null) {
         children.add(titleWidget);
       }
