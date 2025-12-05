@@ -79,7 +79,7 @@ DelegateBuilder supportedStyle(
       );
       break;
     case TabStyle.textIn:
-      assert(items.every((it) => it.title != null && it.title!.isNotEmpty),
+      assert(items.every((it) => it.hasTitle),
           'title is necessary for TabStyle.textIn');
       builder = TextInTabStyle(
         items: items,
@@ -89,7 +89,7 @@ DelegateBuilder supportedStyle(
       );
       break;
     case TabStyle.titled:
-      assert(items.every((it) => it.title != null && it.title!.isNotEmpty),
+      assert(items.every((it) => it.hasTitle),
           'title is necessary for TabStyle.titled');
       builder = TitledTabStyle(
         items: items,

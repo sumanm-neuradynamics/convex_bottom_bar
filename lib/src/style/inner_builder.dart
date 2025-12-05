@@ -46,6 +46,6 @@ abstract class InnerBuilder extends DelegateBuilder {
 
   /// Return true if title text exists
   bool hasNoText(TabItem item) {
-    return item.title == null || item.title!.isEmpty;
+    return !item.hasTitle;
   }
 }

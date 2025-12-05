@@ -49,10 +49,10 @@ class FixedTabStyle extends InnerBuilder {
           children: <Widget>[
             BlendImageIcon(
               active ? item.activeIcon ?? item.icon : item.icon,
-              color: item.blend ? (c) : null,
+              color: item.blend ? color : null,
               size: style.activeIconSize,
             ),
-            Text(item.title ?? '', style: textStyle)
+            item.buildTitleWidget(textStyle) ?? SizedBox.shrink()
           ],
         ),
       );
@@ -64,9 +64,10 @@ class FixedTabStyle extends InnerBuilder {
       size: style.iconSize,
       color: item.blend ? (c) : null,
     );
+    var titleWidget = item.buildTitleWidget(textStyle);
     var children = noLabel
         ? <Widget>[icon]
-        : <Widget>[icon, Text(item.title ?? '', style: textStyle)];
+        : <Widget>[icon, titleWidget ?? SizedBox.shrink()];
     return Container(
       padding: EdgeInsets.only(bottom: 2),
       child: Column(

@@ -53,7 +53,7 @@ class FixedCircleTabStyle extends InnerBuilder {
         height: style.layoutSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: c,
+          color: color,
         ),
         margin: EdgeInsets.all(margin),
         child: BlendImageIcon(
@@ -70,9 +70,10 @@ class FixedCircleTabStyle extends InnerBuilder {
       color: item.blend ? (c) : null,
       size: style.iconSize,
     );
+    var titleWidget = item.buildTitleWidget(textStyle);
     var children = noLabel
         ? <Widget>[icon]
-        : <Widget>[icon, Text(item.title ?? '', style: textStyle)];
+        : <Widget>[icon, titleWidget ?? SizedBox.shrink()];
     return Container(
       padding: EdgeInsets.only(bottom: 2),
       child: Column(

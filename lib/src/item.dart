@@ -15,14 +15,15 @@
  */
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// Tab item used for [ConvexAppBar].
 class TabItem<T> {
   /// this code is added by moein
   final String? fontFamily;
 
-  /// Tab text.
-  final String? title;
+  /// Tab text. Can be a String or a Widget.
+  final dynamic title;
 
   /// IconData or Image.
   ///
@@ -45,5 +46,32 @@ class TabItem<T> {
     bool? isIconBlend,
   })  : assert(icon is IconData || icon is Widget,
             'TabItem only support IconData and Widget'),
+        assert(title == null || title is String || title is Widget,
+            'TabItem title must be String or Widget'),
         blend = isIconBlend ?? (icon is IconData);
+
+  /// Build title widget from title (String or Widget)
+  /// If title is a String, it will be wrapped in a Text widget with the given style
+  /// If title is a Widget, it will be returned as is
+  /// If title is null or empty String, returns null
+  Widget? buildTitleWidget(TextStyle? textStyle) {
+    if (title == null) return null;
+    if (title is Widget) return title as Widget;
+    if (title is String) {
+      final String titleStr = title as String;
+      if (titleStr.isEmpty) return null;
+      return Text(titleStr, style: textStyle);
+    }
+    return null;
+  }
+
+  /// Check if title is empty or null
+  bool get hasTitle {
+    if (title == null) return false;
+    if (title is Widget) return true;
+    if (title is String) {
+      return (title as String).isNotEmpty;
+    }
+    return false;
+  }
 }

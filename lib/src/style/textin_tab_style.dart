@@ -56,7 +56,7 @@ class TextInTabStyle extends InnerBuilder {
             ),
             TransitionContainer.slide(
               curve: curve,
-              child: Text(item.title ?? '', style: textStyle),
+              child: item.buildTitleWidget(textStyle) ?? SizedBox.shrink(),
             ),
           ],
         ),
